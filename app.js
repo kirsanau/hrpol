@@ -49,7 +49,7 @@ const LuisModelUrl = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('MyAllowances', (session) => {
-    session.send('You reached MyAllowances intent, you said \'%s\'.', session.message.text);
+    session.send('You reached MyAllowances intent, you said \'%s\'.', session);
 })
 .matches('AllowanceSpecific', (session) => {
     session.send('You reached AllowanceSpecific intent, you said \'%s\'.', session.message.text);
