@@ -122,17 +122,29 @@ bot.dialog('AllowanceSpecificDialog',
         var grade = builder.EntityRecognizer.findEntity(intent.entities, 'Grade');
         var allowanceType = builder.EntityRecognizer.findEntity(intent.entities, 'AllowanceType');
 
-        // Turn on a specific device if a device entity is detected by LUIS
-        if (allowanceType) {
-            session.send('Ok, you are interested in allowance: %s', allowanceType.entity);
-            session.send(' for nationality: %s', nationality.entity);
-            session.send( ' and grade: %s', grade.entity);
-            // Put your code here for calling the IoT web service that turns on a device
-        } else {
-            // Assuming turning on lights is the default
-            session.send('Can you please specify which of allowances are you interested in');
-            // Put your code here for calling the IoT web service that turns on a device
-        }
+        var msg = new builder.Message(session);
+        msg.attachmentLayout(builder.AttachmentLayout.carousel)
+        msg.attachments([
+
+            new builder.HeroCard(session)
+                .title("Allowance Specific Dialog")
+                .subtitle("Allowance type: %s", allowanceType.entity )
+                .text("For nationality: %s \r\r grade: %s",nationality.entity, grade.entity )
+
+            ]);
+            
+        session.send(msg); 
+        // // Turn on a specific device if a device entity is detected by LUIS
+        // if (allowanceType) {
+        //     session.send('Ok, you are interested in allowance: %s', allowanceType.entity);
+        //     session.send(' for nationality: %s', nationality.entity);
+        //     session.send( ' and grade: %s', grade.entity);
+        //     // Put your code here for calling the IoT web service that turns on a device
+        // } else {
+        //     // Assuming turning on lights is the default
+        //     session.send('Can you please specify which of allowances are you interested in');
+        //     // Put your code here for calling the IoT web service that turns on a device
+        // }
         session.endDialog();
     }
 ).triggerAction({
